@@ -6,7 +6,9 @@ import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import {deliveryOptions} from '../data/deliveryOptions.js';
 
 
-let cartSummaryHTML = '';
+
+function renderOrderSummary() {
+  let cartSummaryHTML = '';
 
 cart.forEach((cartItem) => {
     console.log(cartItem);
@@ -76,6 +78,29 @@ cart.forEach((cartItem) => {
           `;
 });
 
+document.querySelector('.js-order-summary').innerHTML=cartSummaryHTML; 
+
+
+document.querySelectorAll('.js-delete-link').forEach((link) => {
+  link.addEventListener('click', () => {
+    const productId = link.dataset.productId;
+    removeFromCart(productId);
+
+    const container = document.querySelector(`.js-cart-item-container-${productId}`);
+    container.remove();
+  });
+});
+
+document.querySelectorAll('.js-delivery-option').forEach((element) => {
+  element.addEventListener('click', () => {
+    const {productId, deliveryOptionId} = element.dataset;
+    updateDeliveryOption(productId, deliveryOptionId);
+    renderOrderSummary();
+  });
+});
+}
+
+
 
 function deliveryOptionsHTML (matchingProduct, cartItem) {
 
@@ -108,22 +133,7 @@ function deliveryOptionsHTML (matchingProduct, cartItem) {
   return html;
 }
 
-document.querySelector('.js-order-summary').innerHTML=cartSummaryHTML; 
 
 
-document.querySelectorAll('.js-delete-link').forEach((link) => {
-  link.addEventListener('click', () => {
-    const productId = link.dataset.productId;
-    removeFromCart(productId);
 
-    const container = document.querySelector(`.js-cart-item-container-${productId}`);
-    container.remove();
-  });
-});
-
-document.querySelectorAll('.js-delivery-option').forEach((element) => {
-  element.addEventListener('click', () => {
-    const {productId, deliveryOptionId} = element.dataset;
-    updateDeliveryOption(productId, deliveryOptionId);
-  });
-});
+renderOrderSummary();
