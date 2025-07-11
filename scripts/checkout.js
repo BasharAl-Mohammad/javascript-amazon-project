@@ -12,12 +12,26 @@ import { loadCart } from '../data/cart.js';
 
 
 async function loadPage() {
-    await loadProductsFetch();
-    const value = await new Promise((resolve) => {
-        loadCart(() => {
-            resolve('value3');
+
+
+    try {
+        // throw 'error1';
+
+        await loadProductsFetch();
+
+        const value = await new Promise((resolve,reject) => {
+            // throw 'error1';
+
+            loadCart(() => {
+                //reject('error3');
+                resolve('value3');
+            });
         });
-    });
+    } catch(error) {
+        console.warn('heyyyyy');
+        console.error(error);
+    }
+
     renderOrderSummary();
     renderPaymentSummary();
 }
