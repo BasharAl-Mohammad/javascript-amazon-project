@@ -74,6 +74,3 @@ class Cart {
 
 const cart = new Cart('oop');
 const businessCart = new Cart('business');
-
-console.log(cart);
-console.log(businessCart);
